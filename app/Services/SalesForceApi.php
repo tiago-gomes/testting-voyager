@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response as HttpCode;
  * https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG9cHH2bfKACZbfAk7QiqjniaizHkKgMtE8HFvsCPgapFfka9Sp9Oxxaj6eiScpjJgbwddHvkidG98h09tA&redirect_uri=https://127.0.0.1/test.php
  *
  * generate token
- * https://login.salesforce.com/services/oauth2/token?grant_type=authorization_code&redirect_uri=https://127.0.0.1/test.php&client_id=3MVG9cHH2bfKACZbfAk7QiqjniaizHkKgMtE8HFvsCPgapFfka9Sp9Oxxaj6eiScpjJgbwddHvkidG98h09tA&client_secret=D2BF74D44B9EAEC58AB13F454FA60D50142880E8909BFE4DC46CA9E8D01FED06&code=aPrxD8aRZGb_abrlDUhs0J6IagR2f7IkGPeKtHysphhh064ooYzAdWocxB5jLWX5ja1pOXnqig%3D%3D
+ * https://login.salesforce.com/services/oauth2/token?grant_type=authorization_code&redirect_uri=https://127.0.0.1/test.php&client_id=3MVG9cHH2bfKACZbfAk7QiqjniaizHkKgMtE8HFvsCPgapFfka9Sp9Oxxaj6eiScpjJgbwddHvkidG98h09tA&client_secret=D2BF74D44B9EAEC58AB13F454FA60D50142880E8909BFE4DC46CA9E8D01FED06&code=aPrxD8aRZGb_abrlDUhs0J6Iav3hMUOa1mipao3v5_BOhpa9Gt08_ZMcFRG5Y7QnOmkioa1vjA%3D%3D
  *
  * refresh token
  * https://login.salesforce.com/services/oauth2/token?grant_type=refresh_token&client_id=3MVG9cHH2bfKACZbfAk7QiqjniaizHkKgMtE8HFvsCPgapFfka9Sp9Oxxaj6eiScpjJgbwddHvkidG98h09tA&client_secret=D2BF74D44B9EAEC58AB13F454FA60D50142880E8909BFE4DC46CA9E8D01FED06&refresh_token=YOUR_REFRESH_T
@@ -97,21 +97,53 @@ class SalesForceApi
     }
 
     /**
-     * @param string $instanceUrl
-     * @param        $token
-     *
      * @return mixed
      * @throws \Exception
      */
-    public function getAllAccounts(string $instanceUrl, $token)
+    public function getAllAccounts()
     {
-        $this->client->withToken($token);
+        $this->client->withToken(config('salesforce.salesforce_access_token'));
         $response = $this->client->get(
-            $instanceUrl . '/services/data/' . $this->version . '/sobjects/Contact'
+            config('salesforce.salesforce_instance_url') . '/services/data/' . $this->version . '/sobjects/Contact'
         );
         if (!$response->ok()) {
             throw new \Exception(config('exceptions.oauth_failed_in_salesforce_rest_api'), HttpCode::HTTP_BAD_GATEWAY);
         }
-       return json_decode($response->body());
+       return json_decode($response->body(), true);
+    }
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getAccountById(string $id)
+    {
+        $this->client->withToken(config('salesforce.salesforce_access_token'));
+        $response = $this->client->get(
+            config('salesforce.salesforce_instance_url') . '/services/data/' . $this->version . '/sobjects/Contact/' . $id
+        );
+        if (!$response->ok()) {
+            throw new \Exception(config('exceptions.oauth_failed_in_salesforce_rest_api'), HttpCode::HTTP_BAD_GATEWAY);
+        }
+        return json_decode($response->body(), true);
+    }
+
+    /**
+     * @param array $payload
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function createAccount(array $payload)
+    {
+        $this->client->withToken(config('salesforce.salesforce_access_token'));
+        $response = $this->client->post(
+            config('salesforce.salesforce_instance_url') . '/services/data/' . $this->version . '/sobjects/Contact/',
+            $payload
+        );
+        if (!$response->ok()) {
+            throw new \Exception(config('exceptions.oauth_failed_in_salesforce_rest_api'), HttpCode::HTTP_BAD_GATEWAY);
+        }
+        return json_decode($response->body(), true);
     }
 }
