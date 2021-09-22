@@ -49,4 +49,11 @@ class SalesForceTest extends TestCase
         );
         $this->assertTrue($isAccountUpdated);
     }
+
+    public function testExecuteQuery()
+    {
+        $client = new SalesForceApi();
+        $account = $client->executeQuery('SELECT+name+from+Account');
+        $this->assertIsArray($account);
+    }
 }
