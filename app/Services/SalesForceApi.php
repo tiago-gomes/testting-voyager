@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response as HttpCode;
  * https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG9cHH2bfKACZbfAk7QiqjniaizHkKgMtE8HFvsCPgapFfka9Sp9Oxxaj6eiScpjJgbwddHvkidG98h09tA&redirect_uri=https://127.0.0.1/test.php
  *
  * generate token
- * https://login.salesforce.com/services/oauth2/token?grant_type=authorization_code&redirect_uri=https://127.0.0.1/test.php&client_id=3MVG9cHH2bfKACZbfAk7QiqjniaizHkKgMtE8HFvsCPgapFfka9Sp9Oxxaj6eiScpjJgbwddHvkidG98h09tA&client_secret=D2BF74D44B9EAEC58AB13F454FA60D50142880E8909BFE4DC46CA9E8D01FED06&code=aPrxD8aRZGb_abrlDUhs0J6Iai9BZOvwD5tEP9ABPLVsJFEk5ITqdALQ8rrfNsCvaG.uzrHnEQ%3D%3D
+ * https://login.salesforce.com/services/oauth2/token?grant_type=authorization_code&redirect_uri=https://127.0.0.1/test.php&client_id=3MVG9cHH2bfKACZbfAk7QiqjniaizHkKgMtE8HFvsCPgapFfka9Sp9Oxxaj6eiScpjJgbwddHvkidG98h09tA&client_secret=D2BF74D44B9EAEC58AB13F454FA60D50142880E8909BFE4DC46CA9E8D01FED06&code=
  *
  * refresh token
  * https://login.salesforce.com/services/oauth2/token?grant_type=refresh_token&client_id=3MVG9cHH2bfKACZbfAk7QiqjniaizHkKgMtE8HFvsCPgapFfka9Sp9Oxxaj6eiScpjJgbwddHvkidG98h09tA&client_secret=D2BF74D44B9EAEC58AB13F454FA60D50142880E8909BFE4DC46CA9E8D01FED06&refresh_token=YOUR_REFRESH_T
@@ -166,5 +166,23 @@ class SalesForceApi
             throw new \Exception(config('exceptions.oauth_failed_in_salesforce_rest_api'), HttpCode::HTTP_BAD_GATEWAY);
         }
         return true;
+    }
+
+    /**
+     * @param string $query
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function executeQuery(string $query): array
+    {
+        $this->client->withToken(Configuration::first()->access_token);
+        $response = $this->client->get(
+            config('salesforce.salesforce_instance_url') . '/services/data/' . $this->version . '/query/?q=' . $query
+        );
+        if (!$response->status() == 201) {
+            throw new \Exception(config('exceptions.oauth_failed_in_salesforce_rest_api'), HttpCode::HTTP_BAD_GATEWAY);
+        }
+        return json_decode($response->body(), true);
     }
 }
