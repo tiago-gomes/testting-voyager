@@ -13,6 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/authorize','App\Http\Controllers\SalesForceController@authorizeUrl');
+Route::get('/callback','App\Http\Controllers\SalesForceController@callback');

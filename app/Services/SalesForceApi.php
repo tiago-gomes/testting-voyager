@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response as HttpCode;
 /**
  * https://www.gosquared.com/blog/salesforce-rest-api-integration
  *
- * User must click in the following link and allow permitions then he will get
+ * User must click in the following link and allow permitions then he will be
  * redirected to our frontend with a code which will be submitted to backend
  * and a new token will be generated
  * https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG9cHH2bfKACZbfAk7QiqjniaizHkKgMtE8HFvsCPgapFfka9Sp9Oxxaj6eiScpjJgbwddHvkidG98h09tA&redirect_uri=https://127.0.0.1/test.php
@@ -50,18 +50,16 @@ class SalesForceApi
     public function getToken(string $code): array
     {
         $response = $this->client->get(
-            config('salesforce.oauth_url') . 'token',
+           'https://login.salesforce.com/services/oauth2/token',
             [
                 'grant_type' => 'authorization_code',
                 'redirect_uri' => config('salesforce.callback_url'),
                 'client_id' => config('salesforce.salesforce_key'),
                 'client_secret' => config('salesforce.salesforce_secret'),
+                'code' => $code
             ]
         );
-        if (!$response->ok()) {
-            throw new \Exception(config('exceptions.oauth_failed_in_salesforce_rest_api'), HttpCode::HTTP_BAD_GATEWAY);
-        }
-        $response = json_decode($response->body());
+        $response = json_decode($response->body(), true);
         return [
             'access_token' => \Arr::get($response, 'access_token'),
             'refresh_token' => \Arr::get($response, 'refresh_token'),
