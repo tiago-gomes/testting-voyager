@@ -183,4 +183,20 @@ class SalesForceApi
         }
         return json_decode($response->body(), true);
     }
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    public function describeResource(string $resource)
+    {
+        $this->client->withToken(Configuration::first()->access_token);
+        $response = $this->client->get(
+            config('salesforce.salesforce_instance_url') . '/services/data/' . $this->version . '/sobjects/' . $resource . '/describe'
+        );
+        if (!$response->ok()) {
+            throw new \Exception(config('exceptions.oauth_failed_in_salesforce_rest_api'), HttpCode::HTTP_BAD_GATEWAY);
+        }
+        return json_decode($response->body(), true);
+    }
 }
