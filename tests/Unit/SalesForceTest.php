@@ -56,4 +56,11 @@ class SalesForceTest extends TestCase
         $account = $client->executeQuery('SELECT+name+from+Account');
         $this->assertIsArray($account);
     }
+
+    public function testDescribeResource()
+    {
+        $client = new SalesForceApi();
+        $account = $client->describeResource('Account');
+        $this->assertIsArray($account);
+    }
 }
