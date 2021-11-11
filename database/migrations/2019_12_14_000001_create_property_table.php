@@ -26,7 +26,7 @@ class CreatePropertyTable extends Migration
             $table->string('zip', 75);
             $table->string('country', 75);
             $table->string('mls_area', 75);
-            $table->string('mondel_name')->nullable();
+            $table->string('model_name')->nullable();
             $table->integer('nr_beds');
             $table->string('full_baths');
             $table->string('partial_baths')->nullable();
@@ -37,7 +37,7 @@ class CreatePropertyTable extends Migration
             $table->integer('total_units')->nullable();
             $table->integer('property_faces')->nullable();
             $table->integer('unit_features')->nullable();
-            $table->integer('secundary_living_space')->nullable();
+            $table->integer('secondary_living_space')->nullable();
             $table->integer('year_build');
             $table->integer('zunning');
             $table->integer('lot_sqft');
@@ -66,8 +66,8 @@ class CreatePropertyTable extends Migration
             $table->float('close_sale_price', 12, 8)->nullable();
             $table->integer('buyer_financing');
             $table->string('sold_remarks')->nullable();
-            $table->integer('possesion_notice')->nullable();
-            $table->integer('acceptsble_financial_terms')->nullable();
+            $table->integer('possession_notice')->nullable();
+            $table->integer('acceptable_financial_terms')->nullable();
             $table->float('total_assumable_loans', 12, 8)->nullable();
             $table->integer('loan_rate')->nullable();
             $table->float('cash_assume', 12, 8)->nullable();
@@ -148,7 +148,7 @@ class CreatePropertyTable extends Migration
             $table->string('branded_additional_tour_url')->nullable();
             $table->string('unbranded_additional_tour_url')->nullable();
             $table->string('public_remarks')->nullable();
-            $table->boolean('is_consummer_website');
+            $table->boolean('is_consumer_website');
             $table->boolean('is_vow_idx_avm');
             $table->boolean('allow_vow_idx_avm');
             $table->integer('public_listing_address_format');
