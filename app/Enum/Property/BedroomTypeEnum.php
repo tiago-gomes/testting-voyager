@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Enum\Property;
+
+Enum BedroomTypeEnum: int
+{
+    case GROUND_FLOOR_BEDROOM = 1;
+    case INVERTED_FLOOR_PLAN = 2;
+    case LOFT_BEDROOM = 3;
+    case MASTER_BEDROOM_ON_GROUND_FLOOR = 4;
+    case MASTER_SUITE_RETREAT = 5;
+    case MASTER_SUITE_RETREAT_MORE_THEN_2 = 6;
+    case MORE_THEN_ONE_BEDROOM_GROUND_FLOOR = 7;
+    case MORE_THEN_ONE_MASTER_BEDROOM = 8;
+    case MORE_THEN_ONE_MASTER_BEDROOM_ON_GROUND_FLOOR = 9;
+    case REVERSE_FLOOR_PLAN = 10;
+    case WALK_IN_CLOSET = 11;
+}
