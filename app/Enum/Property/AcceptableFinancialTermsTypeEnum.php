@@ -2,6 +2,7 @@
 
 namespace App\Enum\Property;
 
+
 Enum AcceptableFinancialTermsTypeEnum: int
 {
     case All_INCLUSIVE_TRUST_DEED = 1;
