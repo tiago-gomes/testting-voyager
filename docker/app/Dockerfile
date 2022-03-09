@@ -28,4 +28,6 @@ RUN apt-get update \
 ADD config/supervisord.conf /etc/supervisor
 ADD worker/* /etc/supervisor/conf.d
 
+RUN docker-php-ext-install exif
+
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

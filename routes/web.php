@@ -13,5 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/authorize','App\Http\Controllers\SalesForceController@authorizeUrl');
-Route::get('/callback','App\Http\Controllers\SalesForceController@callback');
+Route::get('/associado/registar','App\Http\Controllers\AssociadoController@registarAssociado');
+Route::post('/associado/novo','App\Http\Controllers\AssociadoController@criarAssociado');
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+    Route::get('quotas', ['uses' => 'App\Http\Controllers\QuotaController@index2', 'as' => 'voyager.quotas.index']);
+});

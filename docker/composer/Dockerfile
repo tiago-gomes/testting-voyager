@@ -1,4 +1,4 @@
-FROM api_app:latest
+FROM api_application:latest
 MAINTAINER Tiago Gomes geone85@gmail.com
 RUN curl --silent --show-error https://getcomposer.org/installer | php
 
