@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/associado/registar','App\Http\Controllers\AssociadoController@registarAssociado');
-Route::post('/associado/novo','App\Http\Controllers\AssociadoController@criarAssociado');
+//Route::get('/associado/registar','App\Http\Controllers\AssociadoController@registarAssociado');
+//Route::post('/associado/novo','App\Http\Controllers\AssociadoController@criarAssociado');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
